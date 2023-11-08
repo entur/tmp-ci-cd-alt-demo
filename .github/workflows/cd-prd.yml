@@ -2,13 +2,8 @@ name: Deploy Prd
 
 on:
   pull_request_review:
-  pull_request:
-    branches:
-      - main
     types:
-      - opened
-      - synchronize
-      - edited
+      - submitted
 
 jobs:
   cd-prd:
