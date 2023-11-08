@@ -1,14 +1,15 @@
 name: Deploy Tst
 
 on:
-  workflow_run:
-    workflows: ["Deploy Dev"]
-    types: 
-      - completed
+  pull_request_review:
+    types:
+      - submitted
 
 jobs:
   cd-tst:
     runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
+    environment: tst
     steps:
       - name: cd-tst
         run: echo "Deploy to tst"

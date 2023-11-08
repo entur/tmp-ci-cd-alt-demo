@@ -1,14 +1,15 @@
 name: Deploy Dev
 
 on:
-  workflow_run:
-    workflows: ["Push Docker Image"]
-    types: 
-      - completed
+  pull_request_review:
+    types:
+      - submitted
 
 jobs:
   cd-dev:
     runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
+    environment: dev
     steps:
       - name: cd-dev
         run: echo "Deploy to dev"

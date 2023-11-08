@@ -1,14 +1,15 @@
 name: Deploy Prd
 
 on:
-  workflow_run:
-    workflows: ["Deploy Tst"]
-    types: 
-      - completed
+  pull_request_review:
+    types:
+      - submitted
 
 jobs:
   cd-prd:
     runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
+    environment: prd
     steps:
       - name: cd-prd
         run: echo "Deploy to prd"

@@ -2,10 +2,13 @@ name: Push Docker Image
 
 on:
   pull_request_review:
-    types: [submitted]
+    types:
+      - submitted
+
 jobs:
   push-docker:
     runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
     steps:
       - name: push-docker
         run: echo "Push docker"
