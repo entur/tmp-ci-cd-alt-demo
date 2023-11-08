@@ -3,13 +3,6 @@ name: Push Docker Image
 on:
   pull_request_review:
     types: [submitted]
-  pull_request:
-    branches:
-      - main
-    types:
-      - opened
-      - synchronize
-      - edited
 jobs:
   push-docker:
     runs-on: ubuntu-latest
@@ -17,12 +10,6 @@ jobs:
     steps:
       - name: push-docker
         run: echo "Push docker"
-  awaiting-approval:
-    runs-on: ubuntu-latest
-    if: github.event.review.state != 'approved'
-    steps:
-      - name: needs-approval
-        run: exit 1
   # cd-docker:
   #   name: CD Docker
   #   uses: entur/tmp-github-actions-2/.github/workflows/cd-docker.yml@master
