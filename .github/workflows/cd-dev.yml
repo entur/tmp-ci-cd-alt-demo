@@ -5,10 +5,18 @@ on:
     workflows: ["Push Docker Image"]
     types: 
       - completed
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - edited
 
 jobs:
   cd-dev:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: cd-dev
         run: echo "Deploy to dev"
