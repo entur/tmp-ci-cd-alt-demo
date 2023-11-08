@@ -1,0 +1,16 @@
+ common:
+  app: hest-er-best
+  shortname: hest
+  team: plattform
+  ingress:
+    trafficType: public
+  container:
+    cpu: 0.2
+    memory: 256
+    probes:
+      liveness:
+        path: "/greet"
+      readiness:
+        path: "/greet"
+    prometheus:
+      enabled: false

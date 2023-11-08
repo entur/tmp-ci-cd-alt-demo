@@ -1,0 +1,81 @@
+plugins {
+    id "org.springframework.boot" version "2.7.17"
+    id "io.spring.dependency-management"  version "1.1.3"
+    id 'org.jetbrains.kotlin.jvm' version '1.9.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.10'
+    id "org.owasp.dependencycheck" version "8.4.2"
+    id "jacoco"
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.owasp.dependencycheck'
+
+idea {
+    module {
+        outputDir file('build/classes/main')
+        testOutputDir file('build/classes/test')
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://entur2.jfrog.io/entur2/libs-release'
+        credentials {
+            username = "${project.properties['entur_artifactory_user'] ?: System.env.ARTIFACTORY_USER}"
+            password = "${project.properties['entur_artifactory_password'] ?: System.env.ARTIFACTORY_PASSWORD}"
+        }
+    }
+}
+
+configurations {
+    compile.exclude module: "spring-boot-starter-tomcat"
+}
+
+jacoco {
+  toolVersion = "0.8.11"
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-jetty")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group: "org.junit.vintage", module: "junit-vintage-engine")
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "20"
+  }
+
+test {
+    useJUnitPlatform()
+    environment("APP_ENV", "local")
+    finalizedBy(jacocoTestReport) // report is always generated after tests run
+  }
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "20"
+    }
+}
+
+jacocoTestReport {
+    executionData.setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
+    reports {
+      xml.required.set(true)
+      csv.required.set(false)
+      html.required.set(true)
+    }
+    dependsOn(test) // tests are required to run before generating the report
+  }

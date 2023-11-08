@@ -1,0 +1,8 @@
+apiVersion: v2
+name: hest-er-best
+description: "Demo for CI CD"
+version: 0.1.0
+# dependencies:
+#   - name: common
+#     version: 1.17.3
+#     repository: "https://entur.github.io/helm-charts"

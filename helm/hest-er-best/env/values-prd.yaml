@@ -1,0 +1,4 @@
+common:
+  env: prd
+  ingress:
+    host: hest-er-best.entur.io
