@@ -1,10 +1,7 @@
 name: Deploy Dev
 
 on:
-  workflow_run:
-    workflows: ["Push Docker Image"]
-    types: 
-      - completed
+  pull_request_review:
   pull_request:
     branches:
       - main
