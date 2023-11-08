@@ -1,0 +1,35 @@
+name: Manual deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: The release name
+        required: true
+        type: string
+        default: hest-er-best
+      image_tag:
+        description: The image tag to deploy
+        required: true
+        type: string
+        default: v1.0.0
+      environment:
+        description: The target environment
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - tst
+          - prd
+
+jobs:
+  helm-deploy:
+    name: Manual helm deploy to ${{ inputs.environment }}
+    uses: entur/tmp-github-actions-2/.github/workflows/manual-helm-deploy.yml@master
+    with:
+      release_name: ${{ inputs.release_name }}
+      namespace: hest-er-best
+      environment: ${{ inputs.environment }}
+      image_tag: ${{ inputs.image_tag }}
+    secrets: inherit
