@@ -3,6 +3,14 @@ name: Push Docker Image
 on:
   pull_request_review:
     types: [submitted]
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - edited
+
 jobs:
   push-docker:
     runs-on: ubuntu-latest
