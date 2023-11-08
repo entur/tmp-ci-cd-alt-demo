@@ -13,6 +13,7 @@ on:
 jobs:
   cd-tst:
     runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
     environment: tst
     steps:
       - name: cd-tst
