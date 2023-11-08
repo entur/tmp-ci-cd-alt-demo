@@ -1,14 +1,19 @@
 name: Deploy Prd
 
 on:
-  workflow_run:
-    workflows: ["Deploy Tst"]
-    types: 
-      - completed
+  pull_request_review:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - edited
 
 jobs:
   cd-prd:
     runs-on: ubuntu-latest
+    environment: prd
     steps:
       - name: cd-prd
         run: echo "Deploy to prd"

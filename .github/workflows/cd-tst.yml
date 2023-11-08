@@ -1,14 +1,19 @@
 name: Deploy Tst
 
 on:
-  workflow_run:
-    workflows: ["Deploy Dev"]
-    types: 
-      - completed
+  pull_request_review:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - edited
 
 jobs:
   cd-tst:
     runs-on: ubuntu-latest
+    environment: tst
     steps:
       - name: cd-tst
         run: echo "Deploy to tst"
