@@ -6,28 +6,23 @@ on:
       - submitted
 
 jobs:
-  cd-tst:
-    runs-on: ubuntu-latest
+  tf-apply:
+    name: Terraform apply tst
     if: github.event.review.state == 'approved'
-    environment: tst
-    steps:
-      - name: cd-tst
-        run: echo "Deploy to tst"
-  # tf-apply:
-  #   name: Terraform apply tst
-  #   uses: entur/tmp-github-actions-2/.github/workflows/tf-apply.yml@master
-  #   with:
-  #     tf_version: 1.1.0
-  #     environment: tst
-  #   secrets: inherit
+    uses: entur/tmp-github-actions-2/.github/workflows/tf-apply.yml@master
+    with:
+      tf_version: 1.1.0
+      environment: tst
+    secrets: inherit
 
-  # helm-deploy:
-  #   name: Deploy app to tst
-  #   uses: entur/tmp-github-actions-2/.github/workflows/helm-deploy.yml@master
-  #   with:
-  #     release_name: hest-er-best
-  #     namespace: hest-er-best
-  #     environment: tst
-  #     image_tag: ${{ github.event.issue.number }}-pr
-  #   needs: tf-apply
-  #   secrets: inherit
+  helm-deploy:
+    name: Deploy app to tst
+    if: github.event.review.state == 'approved'
+    uses: entur/tmp-github-actions-2/.github/workflows/helm-deploy.yml@master
+    with:
+      release_name: hest-er-best
+      namespace: hest-er-best
+      environment: tst
+      image_tag: pr-${{ github.event.pull_request.number }}
+    needs: tf-apply
+    secrets: inherit

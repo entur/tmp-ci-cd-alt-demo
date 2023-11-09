@@ -6,16 +6,10 @@ on:
       - submitted
 
 jobs:
-  push-docker:
-    runs-on: ubuntu-latest
+  cd-docker:
+    name: CD Docker
+    uses: entur/tmp-github-actions-2/.github/workflows/cd-docker.yml@master
     if: github.event.review.state == 'approved'
-    steps:
-      - name: push-docker
-        run: echo "Push docker"
-  # cd-docker:
-  #   name: CD Docker
-  #   uses: entur/tmp-github-actions-2/.github/workflows/cd-docker.yml@master
-  #   if: github.event.review.state == 'approved'
-  #   with:
-  #     app_name: hest-er-best
-  #   secrets: inherit
+    with:
+      app_name: hest-er-best
+    secrets: inherit
