@@ -23,6 +23,6 @@ jobs:
       release_name: hest-er-best
       namespace: hest-er-best
       environment: tst
-      image_tag: ${{ github.event.pull_request.id }}-pr
+      image_tag: ${{ github.event.pull_request.number }}-pr
     needs: tf-apply
     secrets: inherit
