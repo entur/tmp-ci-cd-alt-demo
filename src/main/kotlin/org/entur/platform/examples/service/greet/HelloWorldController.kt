@@ -13,6 +13,7 @@ class HelloWorldController {
     fun sayHello(
             @RequestParam(name = "name", required = false, defaultValue = "World") name: String
     ): Greeting {
+        // Some trigger
         return Greeting("Sjallabais " + name)
     }
 }
