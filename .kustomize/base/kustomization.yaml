@@ -4,3 +4,5 @@ commonLabels:
   org: entur
 commonAnnotations:
   note: ArgoCD Kustomize Test
+resources:
+- namespace.yaml

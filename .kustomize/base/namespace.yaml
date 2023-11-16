@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: replaceme
+    shared-gateway-access: "true"
+    pod-security.kubernetes.io/enforce=baseline: "enforce"
+  name: replaceme
+spec:
+  finalizers:
+    - kubernetes
