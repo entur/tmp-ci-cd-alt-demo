@@ -4,7 +4,7 @@ metadata:
   labels:
     name: replaceme
     shared-gateway-access: "true"
-    pod-security.kubernetes.io/enforce=baseline: "enforce"
+    pod-security.kubernetes.io/enforce: "restricted"
   name: replaceme
 spec:
   finalizers:
