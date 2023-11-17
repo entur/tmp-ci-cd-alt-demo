@@ -23,14 +23,18 @@ jobs:
       #       --set environment=${{ env.ENV }} \
       #       --set release="hestekur" \
       #       > .argo/hestekur/overlays/${{ env.ENV }}/deployment.yaml
-      - name: Set up Kustomize
-        run: |-
-          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v5.2.1/kustomize_5.2.1_linux_amd64
-          chmod u+x ./kustomize
+      - uses: yokawasa/action-setup-kube-tools@v0.9.2
+        with:
+          setup-tools: |
+            kubeconform
+            kustomize
+          kubeconform: '0.6.3'
+          kustomize: '5.2.1'
       - name: "Update Deployment Image Tag" # [3]
         working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
         run: |
-          ../../../../kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
+          kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
+          kustomize build --enable-helm|kubeconform -verbose
       - name: "Push Updated Image Tag ${{ env.ENV }}"
         working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
         run: |
