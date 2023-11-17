@@ -20,4 +20,5 @@ helmCharts:
   version: 1.17.3
 images:
 - name: app-image
-  newName: test
+  newName: eu.gcr.io/entur-system-1287/hest-er-best
+  newTag: pr-12
