@@ -26,5 +26,7 @@ jobs:
         working-directory: ".kustomize/overlays/${{ env.ENV }}"
         run: |
           git add .
+          git config --global user.name "@github-actions-bot"
+          git config --global user.email "github-actions-bot@users.noreply.github.com"
           git commit -am "feat: Update deployment image tag to ${{ env.VERSION }} [skip ci]"
           git push
