@@ -2,8 +2,7 @@ app: hest-er-best
 shortname: hest
 team: plattform
 ingress:
-  trafficType: public
-  host: hest-er-best2.dev.entur.io
+  enabled: false
 container:
   cpu: 0.2
   memory: 256
