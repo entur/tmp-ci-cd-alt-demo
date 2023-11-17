@@ -28,5 +28,5 @@ jobs:
           git add .
           git config --global user.name "@github-actions-bot"
           git config --global user.email "github-actions-bot@users.noreply.github.com"
-          git commit -am "feat: Update deployment image tag in ${{ env.VERSION }} to ${{ env.VERSION }} [skip ci]"
+          git commit -am "feat: Update deployment image tag in ${{ env.ENV }} to ${{ env.VERSION }} [skip ci]"
           git push
