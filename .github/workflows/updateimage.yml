@@ -30,7 +30,7 @@ jobs:
       - name: "Update Deployment Image Tag" # [3]
         working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
         run: |
-          ../../../kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
+          ../../../../kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
       - name: "Push Updated Image Tag ${{ env.ENV }}"
         working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
         run: |
