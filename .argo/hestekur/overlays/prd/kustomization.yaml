@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: hestekur-prd
+commonLabels:
+  environment: prd
+commonAnnotations:
+  note: Marta i farta
+resources:
+- ../../base
+- serviceaccount.yaml
+helmCharts:
+- name: common
+  repo: "https://entur.github.io/helm-charts"
+  version: 1.17.3
+  releaseName: hest-er-best-med-helm
+  valuesFile: values-prd.yaml
+  namespace: hestekur-dev
+  valuesInline:
+    container:
+      image: app-image
+images:
+- name: app-image
+  newName: eu.gcr.io/entur-system-1287/hest-er-best
+  newTag: pr-11
+
+

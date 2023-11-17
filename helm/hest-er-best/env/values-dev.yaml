@@ -1,4 +1,0 @@
-common:
-  env: dev
-  ingress:
-    host: hest-er-best2.sbx.entur.io
