@@ -31,11 +31,11 @@ EOF
 #exit
 
 
-with helm config:
+#with kustomize config:
 for ENV in $ENVS; do
     argocd app create --project $APPNAME --name "${APPNAME}-${ENV}" --repo $REPO --path ".argo/hestekur/overlays/${ENV}" \
         --dest-namespace "${APPNAME}-${ENV}" \
-        --dest-server https://kubernetes.default.svc --revision main --sync-policy none  --sync-option CreateNamespace=false
+        --dest-server https://kubernetes.default.svc --revision main --sync-policy automated  --sync-option CreateNamespace=false --upsert
 done
 
 

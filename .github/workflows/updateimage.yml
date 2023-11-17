@@ -4,7 +4,7 @@ on:
       - "main"
 env:
   IMAGE: "eu.gcr.io/entur-system-1287/hest-er-best"
-  VERSION: "pr-11"
+  VERSION: "pr-12"
   ENV: "dev"
 
 jobs:
@@ -22,17 +22,17 @@ jobs:
             --set common.container.image="dummy:version" \
             --set environment=${{ env.ENV }} \
             --set release="hestekur" \
-            > .kustomize/overlays/${{ env.ENV }}/deployment.yaml
+            > .argo/hestekur/overlays/${{ env.ENV }}/deployment.yaml
       - name: Set up Kustomize
         run: |-
           curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
       - name: "Update Deployment Image Tag" # [3]
-        working-directory: ".kustomize/overlays/${{ env.ENV }}"
+        working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
         run: |
           ../../../kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
       - name: "Push Updated Image Tag ${{ env.ENV }}"
-        working-directory: ".kustomize/overlays/${{ env.ENV }}"
+        working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
         run: |
           git add .
           git config --global user.name "@github-actions-bot"
