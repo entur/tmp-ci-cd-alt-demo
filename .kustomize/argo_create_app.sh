@@ -27,8 +27,9 @@ spec:
 EOF
 
 for ENV in $ENVS; do
-    argocd app create --project $APPNAME --name "AppFactory-${APPNAME}-${ENV}" --repo $REPO --path ".kustomize/overlays/${ENV}" \
-        --dest-server https://kubernetes.default.svc --revision main --sync-policy none
+    argocd app create --project $APPNAME --name "appfactory-${APPNAME}-${ENV}" --repo $REPO --path ".kustomize/overlays/${ENV}" \
+        --dest-namespace "${APPNAME}-${ENV}" \
+        --dest-server https://kubernetes.default.svc --revision main --sync-policy none  --sync-option CreateNamespace=false
     echo "Creating $APPNAME-$ENV"
     argocd app create --project $APPNAME --name "${APPNAME}-${ENV}" --repo $REPO --path "$DIR" \
         --values "env/values-${ENV}.yaml" \

@@ -1,0 +1,29 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - "main"
+env:
+  IMAGE: "eu.gcr.io/entur-system-1287/hest-er-best"
+  VERSION: "pr-12"
+  ENV: "dev"
+
+jobs:
+  update-image-tag:
+    name: "Update Image"
+    #needs: "build-and-push"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Git checkout"
+        uses: "actions/checkout@v2"
+      - name: "Update Deployment Image Tag" # [3]
+        working-directory: ".kustomize/overlays/${{ env.ENV }}"
+        run: |
+          kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
+      - name: "Push Updated Image Tag ${{ env.ENV }}"
+        working-directory: ".kustomize/overlays/${{ env.ENV }}"
+        run: |
+          git add .
+          git commit -am "feat: Update deployment image tag to ${{ env.VERSION }} [skip ci]"
+          git push
