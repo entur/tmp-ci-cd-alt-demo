@@ -1,0 +1,42 @@
+on:
+  push:
+    branches:
+      - "main"
+env:
+  IMAGE: "eu.gcr.io/entur-system-1287/hest-er-best"
+  VERSION: "pr-12"
+  ENV: "dev"
+
+jobs:
+  update-image-tag:
+    name: "Update Image"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Git checkout"
+        uses: "actions/checkout@v2"
+      # - name: "Helm Template"
+      #   run: |
+      #     helm version
+      #     helm template hest-er-best-med-helm helm/hest-er-best \
+      #       -f helm/hest-er-best/env/values-${{ env.ENV }}.yaml \
+      #       --set common.container.image="dummy:version" \
+      #       --set environment=${{ env.ENV }} \
+      #       --set release="hestekur" \
+      #       > .argo/hestekur/overlays/${{ env.ENV }}/deployment.yaml
+      - uses: yokawasa/action-setup-kube-tools@v0.9.2
+        with:
+          setup-tools: |
+            kustomize
+          kustomize: '5.2.1'
+      - name: "Update Deployment Image Tag" # [3]
+        working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
+        run: |
+          kustomize edit set image app-image=${{ env.IMAGE }}:${{ env.VERSION }}
+      - name: "Push Updated Image Tag ${{ env.ENV }}"
+        working-directory: ".argo/hestekur/overlays/${{ env.ENV }}"
+        run: |
+          git add .
+          git config --global user.name "@github-actions-bot"
+          git config --global user.email "github-actions-bot@users.noreply.github.com"
+          git commit -m "feat: Update deployment image tag in ${{ env.ENV }} to ${{ env.VERSION }} [skip ci]"
+          git push
